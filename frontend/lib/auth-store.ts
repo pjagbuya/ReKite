@@ -43,11 +43,17 @@ export const useAuthStore = create<AuthState>()(
           }
 
           const data = await response.json();
-          set({ token: data.access_token, isAuthenticated: true });
+          const token = data.access_token;
           
-          // Optionally fetch user data here
-          // For now, we'll just set basic user info
-          set({ user: { id: 0, username, created_at: new Date().toISOString() } });
+          // Decode JWT to extract user info (basic implementation)
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          const user = {
+            id: 0, // Will be populated when user profile endpoint is added
+            username: payload.sub || username,
+            created_at: new Date().toISOString()
+          };
+          
+          set({ token, user, isAuthenticated: true });
         } catch (error) {
           console.error('Login error:', error);
           throw error;
