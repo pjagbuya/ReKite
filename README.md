@@ -9,7 +9,7 @@ A web application for spaced repetition learning, similar to Anki, helping stude
 - **AI Integration**: Sentence-BERT and Deepgram API support (coming soon)
 - **Modern Frontend**: Next.js with TypeScript and Tailwind CSS
 - **State Management**: Zustand for handling UI timers, progress bars, and live audio feedback
-- **Database**: PostgreSQL support for user stats (SQLite for development)
+- **Database**: Supabase PostgreSQL for cloud-hosted database
 
 ## Tech Stack
 
@@ -22,7 +22,7 @@ A web application for spaced repetition learning, similar to Anki, helping stude
 
 ### Backend
 - **Framework**: FastAPI (Python)
-- **Database**: PostgreSQL (production) / SQLite (development)
+- **Database**: Supabase PostgreSQL (cloud-hosted)
 - **ORM**: SQLAlchemy
 - **Authentication**: JWT tokens with bcrypt password hashing
 - **API Documentation**: Auto-generated OpenAPI/Swagger docs
@@ -31,7 +31,7 @@ A web application for spaced repetition learning, similar to Anki, helping stude
 
 - Node.js 18+ and npm
 - Python 3.8+
-- PostgreSQL (for production) or SQLite (for development)
+- Supabase account (free tier available at https://supabase.com)
 
 ## Installation
 
@@ -59,9 +59,14 @@ source venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Copy environment file and configure
-cp .env.example .env
-# Edit .env with your settings (default uses SQLite)
+# Configure Supabase database
+# 1. Create a free Supabase project at https://supabase.com
+# 2. Get your connection string from Settings > Database > Connection String (Transaction mode)
+# 3. Create a .env file in the backend directory with:
+#    DATABASE_URL=postgresql://postgres.xxxxx:[PASSWORD]@aws-x-region.pooler.supabase.com:6543/postgres
+
+# Create database tables
+python -c "from database import Base, engine; Base.metadata.create_all(bind=engine)"
 ```
 
 ### 3. Frontend Setup
@@ -155,8 +160,9 @@ ReKite/
 
 The backend uses FastAPI with automatic API documentation:
 - Visit `http://localhost:8000/docs` for interactive Swagger UI
-- SQLAlchemy ORM with support for both SQLite and PostgreSQL
+- SQLAlchemy ORM connected to Supabase PostgreSQL
 - JWT authentication with secure password hashing using bcrypt
+- Database migrations handled through SQLAlchemy's `create_all()`
 
 ### Frontend Development
 
