@@ -9,5 +9,6 @@ pip install --upgrade pip setuptools wheel
 # Install cryptography with pre-built wheels (avoid Rust compilation)
 pip install cryptography --only-binary=cryptography
 
-# Install remaining dependencies
-pip install -r requirements.txt
+# Use production requirements (lightweight, no ML libraries)
+# For full ML features, use: pip install -r requirements.txt
+pip install -r requirements-production.txt

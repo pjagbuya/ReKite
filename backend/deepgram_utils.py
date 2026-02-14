@@ -1,7 +1,12 @@
 import os
-from deepgram import DeepgramClient
 from dotenv import load_dotenv
 import base64
+
+try:
+    from deepgram import DeepgramClient
+    DEEPGRAM_AVAILABLE = True
+except ImportError:
+    DEEPGRAM_AVAILABLE = False
 
 load_dotenv()
 
@@ -10,6 +15,7 @@ DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
 def transcribe_audio(audio_base64: str) -> tuple[str, float]:
     """
     Transcribe audio using Deepgram API
+    Returns empty string if Deepgram is not available
     
     Args:
         audio_base64: Base64 encoded audio data
@@ -17,8 +23,11 @@ def transcribe_audio(audio_base64: str) -> tuple[str, float]:
     Returns:
         tuple: (transcript, confidence_score)
     """
+    if not DEEPGRAM_AVAILABLE:
+        return "Transcription not available (Deepgram SDK not installed)", 0.0
+    
     if not DEEPGRAM_API_KEY:
-        raise ValueError("DEEPGRAM_API_KEY not found in environment variables")
+        return "Transcription not available (API key not configured)", 0.0
     
     try:
         # Initialize Deepgram client with SDK 5.x API

@@ -4,6 +4,8 @@
 
 ### Step 1: Deploy Backend to Render
 
+**Important:** The free tier has 512MB RAM. We use a lightweight version without heavy ML libraries.
+
 1. **Go to [render.com](https://render.com)** and sign up/login
 
 2. **Click "New +"** → **"Web Service"**
@@ -17,16 +19,16 @@
    Branch: main (or your default branch)
    Root Directory: backend
    Runtime: Python 3
-   Build Command: ./build.sh
+   Build Command: chmod +x build.sh && ./build.sh
    Start Command: uvicorn main:app --host 0.0.0.0 --port $PORT
    ```
    
-   **Important:** If you don't see `build.sh` option, use:
+   **Alternative Build Command (if build.sh fails):**
    ```
-   Build Command: pip install --upgrade pip && pip install -r requirements.txt
+   pip install --upgrade pip && pip install -r requirements-production.txt
    ```
 
-5. **Select Plan:** Free (will auto-sleep after 15 min inactivity)
+5. **Select Plan:** Free (512MB RAM - uses lightweight version)
 
 6. **Add Environment Variables:**
    Click "Advanced" → "Add Environment Variable"
@@ -119,6 +121,13 @@
   - Dashboard → Settings → Environment → Python Version: 3.11
 - The app uses pre-built wheels to avoid Rust compilation
 
+**Out of memory errors (used over 512Mi):**
+- Free tier has 512MB RAM limit
+- Make sure you're using `requirements-production.txt` (lightweight)
+- Verify build command uses: `pip install -r requirements-production.txt`
+- If you need ML features, upgrade to Starter plan ($7/month)
+- Check logs: Dashboard → Logs to see memory usage
+
 **API not responding:**
 - Check Render logs: Dashboard → Your service → Logs
 - Verify environment variables are set correctly
@@ -178,6 +187,12 @@
 ## 🎯 Next Steps
 
 After successful deployment:
+
+**Note on Free Tier Deployment:**
+- The free tier (512MB RAM) uses `requirements-production.txt` (lightweight version)
+- AI features use simple keyword matching instead of ML models
+- For full ML features (sentence-transformers), upgrade to Render's Starter plan ($7/month with 512MB+)
+- To enable full ML: Change build command to use `requirements.txt` instead
 
 1. **Custom Domain (Optional):**
    - Vercel: Settings → Domains → Add your domain

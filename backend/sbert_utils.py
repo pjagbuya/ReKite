@@ -1,13 +1,19 @@
-from sentence_transformers import SentenceTransformer, util
+try:
+    from sentence_transformers import SentenceTransformer, util
+    SBERT_AVAILABLE = True
+    # Load model once at module level for efficiency
+    model = SentenceTransformer('all-MiniLM-L6-v2')  # Fast and efficient model
+except ImportError:
+    SBERT_AVAILABLE = False
+    model = None
+
 from typing import List, Tuple
 import re
-
-# Load model once at module level for efficiency
-model = SentenceTransformer('all-MiniLM-L6-v2')  # Fast and efficient model
 
 def calculate_similarity(text1: str, text2: str) -> float:
     """
     Calculate semantic similarity between two texts using Sentence-BERT
+    Falls back to simple keyword matching if SBERT is not available
     
     Args:
         text1: First text
@@ -16,6 +22,17 @@ def calculate_similarity(text1: str, text2: str) -> float:
     Returns:
         float: Similarity score between 0.0 and 1.0
     """
+    if not SBERT_AVAILABLE:
+        # Fallback: simple keyword matching
+        keywords1 = set(extract_keywords(text1.lower()))
+        keywords2 = set(extract_keywords(text2.lower()))
+        if not keywords1 or not keywords2:
+            return 0.0
+        # Jaccard similarity
+        intersection = len(keywords1 & keywords2)
+        union = len(keywords1 | keywords2)
+        return intersection / union if union > 0 else 0.0
+    
     # Encode texts using SBERT
     embeddings = model.encode([text1, text2], convert_to_tensor=True)
     
