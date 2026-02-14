@@ -89,7 +89,7 @@ cp .env.local.example .env.local
 ```bash
 cd backend
 source venv/bin/activate  # or venv\Scripts\activate on Windows
-uvicorn main:app --reload
+python -m uvicorn main:app --reload
 ```
 
 The API will be available at `http://localhost:8000`

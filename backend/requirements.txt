@@ -7,3 +7,9 @@ python-jose[cryptography]==3.3.0
 bcrypt==4.2.1
 python-multipart==0.0.22
 python-dotenv==1.0.1
+
+# AI/ML Dependencies
+deepgram-sdk==3.10.0
+sentence-transformers==3.3.1
+numpy==1.26.4
+scikit-learn==1.6.1

@@ -10,7 +10,17 @@ DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./rekite.db")
 
 # Use SQLite for development if PostgreSQL is not available
 if DATABASE_URL.startswith("postgresql"):
-    engine = create_engine(DATABASE_URL)
+    engine = create_engine(
+        DATABASE_URL,
+        pool_pre_ping=True,  # Test connections before using them
+        pool_recycle=300,    # Recycle connections after 5 minutes (Supabase timeout)
+        pool_size=5,         # Number of connections to keep in pool
+        max_overflow=10,     # Max additional connections beyond pool_size
+        connect_args={
+            "sslmode": "require",  # Required for Supabase
+            "connect_timeout": 10,
+        }
+    )
 else:
     engine = create_engine(
         DATABASE_URL, connect_args={"check_same_thread": False}
