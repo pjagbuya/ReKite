@@ -17,8 +17,13 @@
    Branch: main (or your default branch)
    Root Directory: backend
    Runtime: Python 3
-   Build Command: pip install -r requirements.txt
+   Build Command: ./build.sh
    Start Command: uvicorn main:app --host 0.0.0.0 --port $PORT
+   ```
+   
+   **Important:** If you don't see `build.sh` option, use:
+   ```
+   Build Command: pip install --upgrade pip && pip install -r requirements.txt
    ```
 
 5. **Select Plan:** Free (will auto-sleep after 15 min inactivity)
@@ -106,6 +111,13 @@
 - First build takes 10-12 minutes (normal for ML libraries)
 - Subsequent builds are much faster (~3-5 minutes)
 - Free tier has 15-minute build limit - should work fine
+
+**Rust/Cargo compilation errors:**
+- Make sure `runtime.txt` exists with `python-3.11.8`
+- Verify `build.sh` is executable and being used
+- If still failing, manually set Python version in Render settings:
+  - Dashboard → Settings → Environment → Python Version: 3.11
+- The app uses pre-built wheels to avoid Rust compilation
 
 **API not responding:**
 - Check Render logs: Dashboard → Your service → Logs
