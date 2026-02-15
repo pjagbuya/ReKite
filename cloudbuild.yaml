@@ -15,7 +15,7 @@ steps:
       - 'deploy'
       - 'rekite-backend'
       - '--image=gcr.io/$PROJECT_ID/rekite-backend'
-      - '--region=us-central1'
+      - '--region=asia-northeast1'
       - '--platform=managed'
       - '--allow-unauthenticated'
       - '--memory=2Gi'
