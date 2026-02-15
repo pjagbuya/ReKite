@@ -9,7 +9,7 @@ app = FastAPI(title="Re:Kite API")
 # Configure CORS - Allow frontend URLs
 allowed_origins = [
     "http://localhost:3000",  # Local development
-    "https://*.vercel.app",    # Vercel deployments
+    "http://localhost:3001",
 ]
 
 # Add production frontend URL from environment if set
@@ -18,8 +18,7 @@ if frontend_url := os.getenv("FRONTEND_URL"):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_origin_regex=r"https://.*\.vercel\.app",  # Allow all Vercel preview URLs
+    allow_origins=["*"],  # Allow all origins for now
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
