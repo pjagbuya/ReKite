@@ -6,10 +6,11 @@ A web application for spaced repetition learning, similar to Anki, helping stude
 
 - **User Authentication**: Simple username and password-based signup and login
 - **Spaced Repetition System (SRS)**: Python backend for intelligent review scheduling
-- **AI Integration**: Sentence-BERT and Deepgram API support (coming soon)
+- **AI Integration**: Sentence-BERT for semantic similarity and Hugging Face Deepgram transcription API
 - **Modern Frontend**: Next.js with TypeScript and Tailwind CSS
 - **State Management**: Zustand for handling UI timers, progress bars, and live audio feedback
 - **Database**: Supabase PostgreSQL for cloud-hosted database
+- **Deployment**: Ready for Google Cloud Run, Render, or any container platform
 
 ## Tech Stack
 
@@ -183,7 +184,28 @@ The frontend uses Next.js App Router with:
 - [ ] Study session timers
 - [ ] Progress bars for learning goals
 - [ ] Live audio feedback during study sessions
+## Deployment
 
+Re:Kite is ready to deploy to production! Choose your platform:
+
+### Google Cloud Run (Recommended)
+Serverless, pay-per-use, scales automatically. **Free tier: 2M requests/month!**
+- See [GOOGLE_CLOUD_DEPLOYMENT.md](GOOGLE_CLOUD_DEPLOYMENT.md) for detailed instructions
+- Quick deploy: `cd backend && chmod +x deploy-gcp.sh && ./deploy-gcp.sh`
+
+### Render
+Simple platform-as-a-service with free tier (512MB RAM) or Starter ($7/month for 2GB RAM)
+- See [DEPLOYMENT.md](DEPLOYMENT.md) for step-by-step guide
+
+### Docker
+Deploy anywhere that supports containers:
+```bash
+cd backend
+docker build -t rekite-backend .
+docker run -p 8080:8080 -e DATABASE_URL="..." rekite-backend
+```
+
+**Frontend:** Deploy to Vercel (free) with one click. See deployment guides for details.
 ## Security Notes
 
 - Passwords are hashed using bcrypt before storage

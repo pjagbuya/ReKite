@@ -2,9 +2,9 @@ services:
   - type: web
     name: rekite-backend
     runtime: python
-    plan: free
+    plan: starter  # $7/month - needed for ML models (2GB RAM)
     rootDir: backend
-    buildCommand: chmod +x build.sh && ./build.sh
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
@@ -12,3 +12,11 @@ services:
         value: 3.11.8
       - key: PORT
         sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "30"
