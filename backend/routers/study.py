@@ -144,7 +144,7 @@ async def transcribe_speech(
 ):
     """Transcribe audio to text using Deepgram"""
     try:
-        transcript, confidence = transcribe_audio(request.audio_base64)
+        transcript, confidence = await transcribe_audio(request.audio_base64)
         
         return TranscriptionResponse(
             transcript=transcript,
