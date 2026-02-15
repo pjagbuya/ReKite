@@ -81,8 +81,12 @@ Set-Location $scriptPath
 # Verify Dockerfile exists
 if (-not (Test-Path "Dockerfile")) {
     Write-Host "❌ Dockerfile not found! Make sure you're in the backend directory." -ForegroundColor Red
+    Write-Host "💡 Tip: Run this script from the backend folder, or use the cloudbuild.yaml from the root." -ForegroundColor Yellow
     exit 1
 }
+
+Write-Host "✅ Found Dockerfile in current directory" -ForegroundColor Green
+Write-Host ""
 
 # Execute deployment
 gcloud run deploy rekite-backend `
