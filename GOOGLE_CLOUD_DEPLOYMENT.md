@@ -60,8 +60,11 @@ gcloud services enable cloudbuild.googleapis.com
 This builds and deploys in one command:
 
 ```bash
-# Navigate to backend directory
+# IMPORTANT: Must navigate to backend directory first!
 cd backend
+
+# Verify you're in the right directory (should show Dockerfile)
+ls Dockerfile
 
 # Deploy to Cloud Run
 gcloud run deploy rekite-backend \
@@ -80,6 +83,8 @@ gcloud run deploy rekite-backend \
 ```
 
 **Note:** Replace the environment variables with your actual values!
+
+**Common Error:** If you get "backend: is a directory" error, you're in the wrong folder. Make sure you're IN the backend directory before running the deploy command.
 
 ### Option B: Build with Docker First (For Testing)
 
